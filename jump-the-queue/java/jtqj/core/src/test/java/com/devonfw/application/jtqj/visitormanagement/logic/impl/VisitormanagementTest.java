@@ -15,46 +15,45 @@ import com.devonfw.application.jtqj.visitormanagement.logic.api.to.VisitorSearch
 import com.devonfw.module.test.common.base.ComponentTest;
 
 @SpringBootTest(classes = SpringBootApp.class)
-public class VisitormanagementTest extends ComponentTest{
+public class VisitormanagementTest extends ComponentTest {
 
-	private VisitorEto visitorEto = new VisitorEto();
+  private VisitorEto visitorEto = new VisitorEto();
 
-	@Inject
-	private Visitormanagement visitormanagement;
+  @Inject
+  private Visitormanagement visitormanagement;
 
+  @Override
+  protected void doSetUp() {
 
-	@Override
-	protected void doSetUp() {
-		super.doSetUp();
-		visitorEto.setName("Mary");
-		visitorEto.setUsername("mary@mary.com");
-		visitorEto.setPhoneNumber("123456789");
-		visitorEto.setPassword("test");
-		visitorEto.setUserType(false);
-		visitorEto.setAcceptedTerms(true);
-		visitorEto.setAcceptedCommercial(true);
-	}
+    super.doSetUp();
+    this.visitorEto.setName("Mary");
+    this.visitorEto.setUsername("mary@mary.com");
+    this.visitorEto.setPhoneNumber("123456789");
+    this.visitorEto.setPassword("test");
+    this.visitorEto.setUserType(false);
+    this.visitorEto.setAcceptedTerms(true);
+    this.visitorEto.setAcceptedCommercial(true);
+  }
 
+  @Test
+  public void saveVisitorTest() {
 
-	  @Test
-	public void saveVisitorTest() {
+    VisitorEto visitorEtoResult = this.visitormanagement.saveVisitor(this.visitorEto);
 
-		VisitorEto visitorEtoResult = this.visitormanagement.saveVisitor(visitorEto);
+    assertThat(visitorEtoResult.getId()).isNotNull();
+    assertThat(visitorEtoResult.getName()).isEqualTo("Mary");
 
-	    assertThat(visitorEtoResult.getId()).isNotNull();
-	    assertThat(visitorEtoResult.getName()).isEqualTo("Mary");
+    this.visitormanagement.deleteVisitor(visitorEtoResult.getId());
+  }
 
-	    this.visitormanagement.deleteVisitor(visitorEtoResult.getId());
-	  }
+  @Test
+  public void findVisitorsTest() {
 
-	  @Test
-	  public void findVisitorsTest() {
+    VisitorSearchCriteriaTo criteria = new VisitorSearchCriteriaTo();
+    Pageable pageable = PageRequest.of(0, 100);
+    criteria.setPageable(pageable);
+    Page<VisitorEto> result = this.visitormanagement.findVisitors(criteria);
 
-	    VisitorSearchCriteriaTo criteria = new VisitorSearchCriteriaTo();
-	    Pageable pageable = PageRequest.of(0, 100);
-	    criteria.setPageable(pageable);
-	    Page<VisitorEto> result = this.visitormanagement.findVisitors(criteria);
-
-	    assertThat(result).isNotNull();
-	  }
+    assertThat(result).isNotNull();
+  }
 }
