@@ -13,12 +13,11 @@ import com.devonfw.application.jtqj.visitormanagement.logic.api.to.VisitorSearch
 public interface Visitormanagement {
 
   /**
-   * Returns a Visitor by its id 'id'.
    *
-   * @param id The id 'id' of the Visitor.
-   * @return The {@link VisitorEto} with id 'id'
+   * @param id
+   * @return
    */
-  VisitorEto findVisitor(long id);
+  VisitorEto getVisitor(long id);
 
   /**
    * Saves a visitor and store it in the database.

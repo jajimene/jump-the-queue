@@ -30,17 +30,6 @@ public class VisitormanagementImpl extends AbstractComponentFacade implements Vi
   private static final Logger LOG = LoggerFactory.getLogger(VisitormanagementImpl.class);
 
   @Override
-  public VisitorEto findVisitor(long id) {
-
-    LOG.debug("Get Visitor with id {} from database.", id);
-    Optional<VisitorEntity> foundEntity = this.visitorRepository.findById(id);
-    if (foundEntity.isPresent())
-      return getBeanMapper().map(foundEntity.get(), VisitorEto.class);
-    else
-      return null;
-  }
-
-  @Override
   public VisitorEto saveVisitor(VisitorEto visitor) {
 
     Objects.requireNonNull(visitor, "visitor");
@@ -67,6 +56,19 @@ public class VisitormanagementImpl extends AbstractComponentFacade implements Vi
 
     Page<VisitorEntity> visitors = this.visitorRepository.findByCriteria(criteria);
     return mapPaginatedEntityList(visitors, VisitorEto.class);
+  }
+
+  @Override
+  public VisitorEto getVisitor(long id) {
+
+    Optional<VisitorEntity> visitorEntity = this.visitorRepository.findById(id);
+
+    if (visitorEntity.isPresent()) {
+      return getBeanMapper().map(visitorEntity.get(), VisitorEto.class);
+    } else {
+      return null;
+    }
+
   }
 
 }
