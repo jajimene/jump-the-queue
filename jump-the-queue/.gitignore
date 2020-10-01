@@ -29,4 +29,5 @@ java/mtsj/logs/
 hs_err_pid*
 
 #h2 db files
-*.db
+/java/jtqj/core/.jtqj.mv.db
+/java/jtqj/core/.jtqj.trace.db
